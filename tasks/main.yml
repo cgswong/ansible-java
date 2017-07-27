@@ -11,6 +11,12 @@
     - java
     - bootstrap
 
+- name: install requirement for CentOS 6
+  yum:
+    name: libselinux-python
+    state: latest
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6"
+
 - name: set JAVA_HOME in environment
   lineinfile:
     path: '/etc/profile.d/java_home.sh'
