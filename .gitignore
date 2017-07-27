@@ -1,0 +1,31 @@
+## Parameters
+env/
+
+## Packer
+# Cache objects
+packer/packer_cache/
+packer/output/
+packer/build/
+
+# For built boxes
+*.box
+
+## Mac trashcan
+.DS_Store
+
+## Vagrant droppings
+.vagrant
+
+## IDE
+.idea
+
+## Security don't
+*.pem
+*.pub
+
+## Terraform droppings
+*.tfstate*
+.terraform
+
+# Ansible droppings
+*.retry

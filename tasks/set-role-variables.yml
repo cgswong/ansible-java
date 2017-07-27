@@ -1,0 +1,56 @@
+---
+# Set necessary role variables
+
+- name: set Java installation directory for Oracle
+  set_fact:
+    java_install_dir: '/opt/jvm'
+    java_home: "/opt/jvm/{{ java_platform }}"
+  when: java_distro == "oracle"
+
+- name: set Java installation directory for OpenJDK
+  set_fact:
+    java_install_dir: '/usr/lib/jvm'
+    java_home: "/usr/lib/jvm/{{ java_platform }}-1.{{ java_version }}.0"
+  when: java_distro == "openjdk"
+
+- name: set Java version
+  set_fact:
+    java_full_version: "1.{{ java_version }}.0_{{ java_subversion }}"
+  when: java_subversion is defined and java_distro == "oracle"
+
+- name: set Java detail for 1.8.0_131
+  set_fact:
+    java_version_detail: "{{ java_version }}u{{ java_subversion }}-b11"
+  when: java_distro == "oracle" and java_version == 8 and java_subversion == 131 and java_build is undefined
+
+- name: set Java detail for generic
+  set_fact:
+    java_version_detail: "{{ java_version }}u{{ java_subversion }}-b{{ java_build }}"
+  when: java_version_detail is undefined and java_distro == "oracle" and java_build is defined
+
+- name: set JRE download file
+  set_fact:
+    java_tarball_file: "server-jre-{{ java_version }}u{{ java_subversion }}-linux-x64.tar.gz"
+  when: java_version_detail is defined and java_platform == "jre"
+
+- name: set JDK download file
+  set_fact:
+    java_tarball_file: "jdk-{{ java_version }}u{{ java_subversion }}-linux-x64.tar.gz"
+  when: java_version_detail is defined and java_platform == "java"
+
+- name: set Java download URL
+  set_fact:
+    java_download_url: "http://download.oracle.com/otn-pub/java/jdk/{{ java_version_detail }}/d54c1d3a095b4ff2b6607d096fa80163/{{ java_tarball_file }}"
+  when: java_version_detail is defined
+
+# JCE variables
+- name: set JCE variables
+  set_fact:
+    jce_zip_file: "jce_policy-{{ java_version }}.zip"
+    jce_zip_folder: "UnlimitedJCEPolicyJDK{{ java_version }}"
+  when: java_install_jce
+
+- name: set JCE download file
+  set_fact:
+    jce_zip_url: "http://download.oracle.com/otn-pub/java/jce/{{ java_version }}/{{ jce_zip_file }}"
+  when: java_install_jce

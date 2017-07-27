@@ -1,0 +1,43 @@
+---
+# OpenJDK install
+- name: install JRE packages for CentOS
+  yum:
+    name: "java-1.{{ java_version }}.0-openjdk-headless"
+    state: latest
+    update_cache: yes
+  when: ansible_distribution == "CentOS" and java_distro == "openjdk" and java_platform == "jre"
+  tags:
+    - java
+    - bootstrap
+
+- name: install JDK packages for CentOS
+  yum:
+    name: "java-1.{{ java_version }}.0-openjdk-devel"
+    state: latest
+    update_cache: yes
+  when: ansible_distribution == "CentOS" and java_distro == "openjdk" and java_platform == "java"
+  tags:
+    - java
+    - bootstrap
+
+- name: Install JDK packages for Ubuntu
+  apt:
+    name: "openjdk-{{ java_version }}-jdk-headless"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 600
+  when: ansible_distribution == "Ubuntu" and java_distro == "openjdk" and java_platform == "java"
+  tags:
+    - java
+    - bootstrap
+
+- name: Install JRE packages for Ubuntu
+  apt:
+    name: "openjdk-{{ java_version }}-jre-headless"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 600
+  when: ansible_distribution == "Ubuntu" and java_distro == "openjdk" and java_platform == "jre"
+  tags:
+    - java
+    - bootstrap

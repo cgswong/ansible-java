@@ -1,0 +1,39 @@
+---
+# tasks file for java
+
+- include: set-role-variables.yml
+  tags:
+    - java
+    - bootstrap
+
+- include: "{{ java_distro }}.yml"
+  tags:
+    - java
+    - bootstrap
+
+- name: set JAVA_HOME in environment
+  lineinfile:
+    path: '/etc/profile.d/java_home.sh'
+    regexp: '^JAVA_HOME='
+    line: "JAVA_HOME={{ java_home }}"
+    owner: root
+    group: root
+    mode: 0644
+    create: yes
+  when: java_set_home
+  tags:
+    - java
+    - bootstrap
+
+- include: alternatives.yml
+  when: java_set_default
+  tags:
+    - java
+    - bootstrap
+
+- include: jce.yml
+  when: java_install_jce
+  tags:
+    - java
+    - jce
+    - bootstrap

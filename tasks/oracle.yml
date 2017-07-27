@@ -1,0 +1,54 @@
+---
+# Oracle JDK install
+- name: download Java package
+  get_url:
+    url: "{{ java_download_url }}"
+    headers: 'Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie'
+    dest: "/tmp/{{ java_tarball_file }}"
+  when: java_distro == "oracle"
+  tags:
+    - java
+    - bootstrap
+
+- name: setup Java directory
+  file:
+    path: "{{ java_install_dir }}"
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  when: java_distro == "oracle"
+  tags:
+    - java
+    - bootstrap
+
+- name: install Java package
+  unarchive:
+    src: "/tmp/{{ java_tarball_file }}"
+    dest: "{{ java_install_dir }}"
+    owner: root
+    group: root
+    remote_src: yes
+    creates: "{{ java_install_dir }}/{{ java_platform }}{{ java_full_version }}"
+  tags:
+    - java
+    - bootstrap
+
+- name: setup Java link
+  file:
+    src: "{{ java_install_dir }}/jdk{{ java_full_version }}"
+    dest: "{{ java_home }}"
+    state: link
+  when: java_distro == "oracle"
+  tags:
+    - java
+    - bootstrap
+
+- name: cleanup Java download
+  file:
+    path: "/tmp/{{ java_tarball_file }}"
+    state: absent
+  when: java_distro == "oracle"
+  tags:
+    - java
+    - bootstrap

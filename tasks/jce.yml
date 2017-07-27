@@ -1,0 +1,95 @@
+---
+# Oracle Java Cryptography Extensions (JCE) install
+- name: get JCE package
+  get_url:
+    url: "{{ jce_zip_url }}"
+    headers: 'Cookie:oraclelicense=accept-securebackup-cookie'
+    dest: "/tmp/{{ jce_zip_file }}"
+  when: java_install_jce
+  tags:
+    - java
+    - jce
+    - bootstrap
+
+# For non-Oracle Java find Java location
+- block:
+  - name: find JAVA_HOME
+    shell: 'dirname $(dirname $(readlink -e $(which java)))'
+    register: java_home_dir
+    changed_when: false
+
+  - name: set JAVA_HOME
+    set_fact: "java_home={{ java_home_dir.stdout}}"
+    when: java_home_dir.skipped is not defined and java_home is not defined
+  when: java_distro != "oracle"
+  tags:
+    - java
+    - jce
+    - bootstrap
+
+- name: install unzip dependency
+  package:
+    name: unzip
+    state: latest
+  tags:
+    - java
+    - jce
+    - bootstrap
+
+- name: install JCE
+  unarchive:
+    src: "/tmp/{{ jce_zip_file }}"
+    dest: "/tmp"
+    owner: root
+    group: root
+    remote_src: yes
+    creates: "/tmp/{{ jce_zip_folder }}"
+  when: java_install_jce
+  tags:
+    - java
+    - jce
+    - bootstrap
+
+- name: setup JCE policies for OpenJDK
+  copy:
+    src: "/tmp/{{ jce_zip_folder }}/{{ item }}"
+    dest: "{{ java_home }}/lib/security/{{ item }}"
+    remote_src: yes
+    mode: 0664
+  with_items:
+    - local_policy.jar
+    - US_export_policy.jar
+  when: java_install_jce and java_distro == "openjdk"
+  tags:
+    - java
+    - jce
+    - bootstrap
+
+- name: setup JCE policies for Oracle
+  copy:
+    src: "/tmp/{{ jce_zip_folder }}/{{ item }}"
+    dest: "{{ java_home }}/jre/lib/security/{{ item }}"
+    remote_src: yes
+    mode: 0664
+  with_items:
+    - local_policy.jar
+    - US_export_policy.jar
+  when: java_install_jce and java_distro == "oracle"
+  tags:
+    - java
+    - jce
+    - bootstrap
+
+- name: cleanup JCE downloads
+  file:
+    path: '/tmp/{{ item }}'
+    state: absent
+  with_items:
+    - "{{ jce_zip_file }}"
+    - "{{ jce_zip_folder }}"
+  when: java_install_jce
+  tags:
+    - java
+    - jce
+    - bootstrap
+    - cleanup

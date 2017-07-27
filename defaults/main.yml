@@ -1,0 +1,13 @@
+---
+# defaults file for java
+
+java_version: 8
+java_subversion: 131
+#java_build: 11
+
+java_distro: 'openjdk'
+java_platform: 'jre'
+
+java_install_jce: false
+java_set_default: true
+java_set_home: true
