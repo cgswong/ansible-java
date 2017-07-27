@@ -7,36 +7,52 @@ services:
 env:
   - distro: centos6
     playbook: test-oracle-java.yml
+    role_name: ansible-java
   - distro: centos6
     playbook: test-oracle-jre.yml
+    role_name: ansible-java
   - distro: centos6
     playbook: test-openjdk-java.yml
+    role_name: ansible-java
   - distro: centos6
     playbook: test-openjdk-jre.yml
+    role_name: ansible-java
   - distro: centos7
     playbook: test-oracle-java.yml
+    role_name: ansible-java
   - distro: centos7
     playbook: test-oracle-jre.yml
+    role_name: ansible-java
   - distro: centos7
     playbook: test-openjdk-java.yml
+    role_name: ansible-java
   - distro: centos7
     playbook: test-openjdk-jre.yml
+    role_name: ansible-java
   - distro: ubuntu1404
     playbook: test-oracle-java.yml
+    role_name: ansible-java
   - distro: ubuntu1404
     playbook: test-oracle-jre.yml
+    role_name: ansible-java
   - distro: ubuntu1404
     playbook: test-openjdk-java.yml
+    role_name: ansible-java
   - distro: ubuntu1404
     playbook: test-openjdk-jre.yml
+    role_name: ansible-java
   - distro: ubuntu1604
     playbook: test-oracle-java.yml
+    role_name: ansible-java
   - distro: ubuntu1604
     playbook: test-oracle-jre.yml
+    role_name: ansible-java
   - distro: ubuntu1604
     playbook: test-openjdk-java.yml
+    role_name: ansible-java
   - distro: ubuntu1604
     playbook: test-openjdk-jre.yml
+    role_name: ansible-java
 
 before_install:
   - sudo apt-get -qq update
