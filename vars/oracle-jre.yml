@@ -1,0 +1,11 @@
+---
+java_version: 8
+java_subversion: 131
+java_build: 11
+
+java_distro: 'oracle'
+java_platform: 'jre'
+
+java_install_jce: true
+java_set_default: true
+java_set_home: true
