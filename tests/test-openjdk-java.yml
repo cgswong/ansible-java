@@ -1,0 +1,9 @@
+---
+- hosts: "{{ inventory|default('all') }}"
+
+  vars_files:
+    - ../vars/openjdk-java.yml
+
+  roles:
+    - ansible-java
+

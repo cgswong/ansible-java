@@ -1,10 +1,8 @@
 ---
-# defaults file for java
-
 java_version: 8
 java_subversion: 131
 
-java_distro: 'oracle'
+java_distro: 'openjdk'
 java_platform: 'java'
 
 java_install_jce: true

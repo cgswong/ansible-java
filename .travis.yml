@@ -1,0 +1,53 @@
+---
+sudo: required
+
+services:
+  - docker
+
+env:
+  - distro: centos6
+    playbook: test-oracle-java.yml
+  - distro: centos6
+    playbook: test-oracle-jre.yml
+  - distro: centos6
+    playbook: test-openjdk-java.yml
+  - distro: centos6
+    playbook: test-openjdk-jre.yml
+  - distro: centos7
+    playbook: test-oracle-java.yml
+  - distro: centos7
+    playbook: test-oracle-jre.yml
+  - distro: centos7
+    playbook: test-openjdk-java.yml
+  - distro: centos7
+    playbook: test-openjdk-jre.yml
+  - distro: ubuntu1404
+    playbook: test-oracle-java.yml
+  - distro: ubuntu1404
+    playbook: test-oracle-jre.yml
+  - distro: ubuntu1404
+    playbook: test-openjdk-java.yml
+  - distro: ubuntu1404
+    playbook: test-openjdk-jre.yml
+  - distro: ubuntu1604
+    playbook: test-oracle-java.yml
+  - distro: ubuntu1604
+    playbook: test-oracle-jre.yml
+  - distro: ubuntu1604
+    playbook: test-openjdk-java.yml
+  - distro: ubuntu1604
+    playbook: test-openjdk-jre.yml
+
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-engine
+  - docker --version
+  - docker info
+
+script:
+  - curl --silent --show-error --location --output ${PWD}/tests/ansible-tester.sh https://gist.githubusercontent.com/cgswong/50384f67dcb20fb9e99e8cb083966db4/raw/c59ff380443f3cff4304dac5415235689785955c/ansible-tester.sh
+  - chmod +x ${PWD}/tests/ansible-tester.sh
+  - ${PWD}/tests/ansible-tester.sh
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
