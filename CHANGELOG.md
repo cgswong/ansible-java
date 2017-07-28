@@ -1,4 +1,10 @@
 
+1.1.5 / 2017-07-28
+==================
+
+  * fix: use PPA repo and make provisions for Precise
+  * chore: use int for centos majro distro evaluation
+
 1.1.4 / 2017-07-27
 ==================
 
