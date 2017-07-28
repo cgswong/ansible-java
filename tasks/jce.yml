@@ -50,6 +50,13 @@
     - jce
     - bootstrap
 
+- name: make sure required directories exist
+  file:
+    path: "{{ java_home }}/lib/security"
+    mode: '0755'
+    recurse: yes
+    state: directory
+
 - name: setup JCE policies for OpenJDK
   copy:
     src: "/tmp/{{ jce_zip_folder }}/{{ item }}"

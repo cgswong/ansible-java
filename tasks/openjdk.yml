@@ -20,24 +20,76 @@
     - java
     - bootstrap
 
-- name: Install JDK packages for Ubuntu
+- block:
+  - name: install untrusted OpenJDK PPA repository for Ubuntu 14.04
+    apt_repository:
+      repo: 'ppa:openjdk-r/ppa'
+      update_cache: yes
+      state: present
+
+  - name: install JDK packages for Ubuntu 14.04
+    apt:
+      name: "openjdk-{{ java_version }}-jdk-headless"
+      state: latest
+      update_cache: yes
+      cache_valid_time: 600
+  when:
+    - ansible_distribution == "Ubuntu"
+    - ansible_distribution_major_version|int < 16
+    - java_distro == "openjdk"
+    - java_platform == "java"
+  tags:
+    - java
+    - bootstrap
+
+- block:
+  - name: install untrusted OpenJDK PPA repository for Ubuntu 14.04
+    apt_repository:
+      repo: 'ppa:openjdk-r/ppa'
+      update_cache: yes
+      state: present
+
+  - name: install JRE packages for Ubuntu 14.04
+    apt:
+      name: "openjdk-{{ java_version }}-jre-headless"
+      state: latest
+      update_cache: yes
+      cache_valid_time: 600
+  when:
+    - ansible_distribution == "Ubuntu"
+    - ansible_distribution_major_version|int < 16
+    - java_distro == "openjdk"
+    - java_platform == "jre"
+  tags:
+    - java
+    - bootstrap
+
+- name: install JDK packages for Ubuntu 16.04+
   apt:
     name: "openjdk-{{ java_version }}-jdk-headless"
     state: latest
     update_cache: yes
     cache_valid_time: 600
-  when: ansible_distribution == "Ubuntu" and java_distro == "openjdk" and java_platform == "java"
+  when:
+    - ansible_distribution == "Ubuntu"
+    - ansible_distribution_major_version|int >= 16
+    - java_distro == "openjdk"
+    - java_platform == "java"
   tags:
     - java
     - bootstrap
 
-- name: Install JRE packages for Ubuntu
+- name: install JRE packages for Ubuntu 16.04+
   apt:
     name: "openjdk-{{ java_version }}-jre-headless"
     state: latest
     update_cache: yes
     cache_valid_time: 600
-  when: ansible_distribution == "Ubuntu" and java_distro == "openjdk" and java_platform == "jre"
+  when:
+    - ansible_distribution == "Ubuntu"
+    - ansible_distribution_major_version|int >= 16
+    - java_distro == "openjdk"
+    - java_platform == "jre"
   tags:
     - java
     - bootstrap

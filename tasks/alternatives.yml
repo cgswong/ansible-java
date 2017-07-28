@@ -18,7 +18,10 @@
     link: '/usr/bin/javac'
     path: "{{ java_home }}/bin/javac"
     priority: 1000
-  when: java_set_default
+  when:
+    - java_set_default
+    - ansible_distribution_major_version|int != 14
+    - java_platform != "jre"
   tags:
     - java
     - bootstrap
@@ -29,7 +32,10 @@
     link: '/usr/bin/jar'
     path: "{{ java_home }}/bin/jar"
     priority: 1000
-  when: java_set_default
+  when:
+    - java_set_default
+    - ansible_distribution_major_version|int != 14
+    - java_platform != "jre"
   tags:
     - java
     - bootstrap
