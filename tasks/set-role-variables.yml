@@ -7,21 +7,20 @@
     java_home: "/opt/jvm/{{ java_platform }}"
   when: java_distro == "oracle"
 
-- name: set Java installation directory for OpenJDK
+- name: set Java installation directory for OpenJDK on CentOS
   set_fact:
     java_install_dir: '/usr/lib/jvm'
     java_home: "/usr/lib/jvm/{{ java_platform }}-1.{{ java_version }}.0"
   when:
-    - ansible_distribution_major_version|int != 14
+    - ansible_distribution == "CentOS"
     - java_distro == "openjdk"
 
-- name: set Java installation directory for OpenJDK on Ubuntu 14.04
+- name: set Java installation directory for OpenJDK on Ubuntu
   set_fact:
     java_install_dir: '/usr/lib/jvm'
     java_home: "/usr/lib/jvm/java-{{ java_version }}-{{ java_distro }}-amd64"
   when:
     - ansible_distribution == "Ubuntu"
-    - ansible_distribution_major_version|int < 16
     - java_distro == "openjdk"
 
 - name: set Oracle Java version

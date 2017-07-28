@@ -59,7 +59,6 @@
   when:
     - java_install_jce
     - java_distro == "openjdk"
-    - ansible_distribution == "CentOS"
 
 - name: setup JCE policies for OpenJDK
   copy:
