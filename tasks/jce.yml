@@ -50,12 +50,16 @@
     - jce
     - bootstrap
 
-- name: make sure required directories exist
+- name: create security directory for OpenJDK on CentOS
   file:
     path: "{{ java_home }}/lib/security"
     mode: '0755'
     recurse: yes
     state: directory
+  when:
+    - java_install_jce
+    - java_distro == "openjdk"
+    - ansible_distribution == "CentOS"
 
 - name: setup JCE policies for OpenJDK
   copy:
